@@ -1,13 +1,15 @@
 #!/bin/bash
 
 # Prompt for IBM Cloud Container Registry (ICR) credentials
-read -p "Enter your IBM Cloud API Key: " IBM_CLOUD_API_KEY
+read -p "Enter your IBM Cloud Container Registry URL (e.g., icr.io): " IBM_CLOUD_REGISTRY
+read -p "Enter your IBM Cloud username (e.g., iamapikey): " IBM_CLOUD_USERNAME
+read -sp "Enter your IBM Cloud password or API Key: " IBM_CLOUD_PASSWORD
 echo
 
-# Log in to IBM ICR using the API key
-echo "$IBM_CLOUD_API_KEY" | podman login -u iamapikey --password-stdin icr.io
+# Log in to IBM ICR using the provided credentials
+echo "$IBM_CLOUD_PASSWORD" | podman login -u "$IBM_CLOUD_USERNAME" --password-stdin "$IBM_CLOUD_REGISTRY"
 if [ $? -ne 0 ]; then
-    echo "IBM ICR login failed. Please check your API key."
+    echo "IBM Cloud Container Registry login failed. Please check your credentials."
     exit 1
 fi
 
@@ -65,8 +67,8 @@ IMAGES=(
 
 # Loop through the images: pull from source, tag, and push to target
 for IMAGE in "${IMAGES[@]}"; do
-    SOURCE_IMAGE="icr.io/cpopen/turbonomic/$IMAGE"
-    TARGET_IMAGE="$PRIVATE_REGISTRY/$IMAGE"
+    SOURCE_IMAGE="$IBM_CLOUD_REGISTRY/cpopen/turbonomic/$IMAGE"
+    TARGET_IMAGE="$PRIVATE_REGISTRY/turbonomic/$IMAGE"
 
     echo "Processing $IMAGE..."
 
