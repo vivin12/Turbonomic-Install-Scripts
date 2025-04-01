@@ -93,4 +93,12 @@ for IMAGE in "${IMAGES[@]}"; do
     echo "$IMAGE processed successfully."
 done
 
+IMAGESS=(
+    "icr.io/cpopen/t8c-operator:42.75",
+    "icr.io/cpopen/turbonomic/kubeturbo:8.15.4",
+    "icr.io/cpopen/kubeturbo-operator:8.15.4"
+)
+
+
+
 echo "All images have been processed."
