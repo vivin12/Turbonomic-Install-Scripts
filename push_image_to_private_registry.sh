@@ -20,7 +20,7 @@ read -sp "Enter your Private Registry password: " PRIVATE_REGISTRY_PASSWORD
 echo
 
 # Log in to Private Registry
-echo "$PRIVATE_REGISTRY_PASSWORD" | podman login -u "$PRIVATE_REGISTRY_USERNAME" --password-stdin "$PRIVATE_REGISTRY"
+echo "$PRIVATE_REGISTRY_PASSWORD" | sudo podman login -u localhost:5000 --tls-verify=false "$PRIVATE_REGISTRY_USERNAME" --password-stdin "$PRIVATE_REGISTRY"
 if [ $? -ne 0 ]; then
     echo "Private Registry login failed. Please check your credentials."
     exit 1
